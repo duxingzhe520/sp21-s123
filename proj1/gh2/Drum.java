@@ -18,7 +18,7 @@ public class Drum {
     /* Create a guitar string of the given frequency.  */
     public Drum(double frequency) {
         buffer = new ArrayDeque<>();
-        int capacity = (int) Math.round((double)SR / frequency);
+        int capacity = (int) Math.round((double) SR / frequency);
         for (int i = 0; i < capacity; ++i) {
             buffer.addLast(0.0);
         }

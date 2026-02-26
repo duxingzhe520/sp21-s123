@@ -7,8 +7,8 @@ import java.util.Iterator;
  * @author duxingzhe520
  */
 
-public class ArrayDeque<Term> implements Iterable<Term>, Deque<Term> {
-    private Term[] items;
+public class ArrayDeque<T> implements Iterable<T>, Deque<T> {
+    private T[] items;
     private int size;
     private int nextFirst;
     private int nextLast;
@@ -16,15 +16,15 @@ public class ArrayDeque<Term> implements Iterable<Term>, Deque<Term> {
     /** Creates an empty Deque with its structure kept.*/
     public ArrayDeque() {
         this.size = 0;
-        this.items = (Term[]) new Object[8];
+        this.items = (T[]) new Object[8];
         nextFirst = 3;
         nextLast = 4;
     }
 
     /** Creates a Deque with single Term first.*/
-    public ArrayDeque(Term t) {
+    public ArrayDeque(T t) {
         this.size = 1;
-        this.items = (Term[]) new Object[8];
+        this.items = (T[]) new Object[8];
         items[3] = t;
         nextFirst = 2;
         nextLast = 4;
@@ -47,7 +47,7 @@ public class ArrayDeque<Term> implements Iterable<Term>, Deque<Term> {
 
     /** Change the size of items to capacity when necessary.*/
     private void resize(int capacity) {
-        Term[] newItems = (Term[]) new Object[capacity];
+        T[] newItems = (T[]) new Object[capacity];
         int firstIndex = firstIndex();
         int lastIndex = lastIndex();
         if (firstIndex <= lastIndex) {
@@ -63,7 +63,7 @@ public class ArrayDeque<Term> implements Iterable<Term>, Deque<Term> {
 
     @Override
     /** Adds an Item t to the first place of the Deque.*/
-    public void addFirst(Term t) {
+    public void addFirst(T t) {
         if (size == items.length) {
             resize((int) (size * 1.125));
         }
@@ -74,7 +74,7 @@ public class ArrayDeque<Term> implements Iterable<Term>, Deque<Term> {
 
     @Override
     /** Adds an Item t to the last place of the Deque. */
-    public void addLast(Term t) {
+    public void addLast(T t) {
         if (size == items.length) {
             resize((int) (size * 1.125));
         }
@@ -109,26 +109,30 @@ public class ArrayDeque<Term> implements Iterable<Term>, Deque<Term> {
 
     @Override
     /** Removes and returns the front term of the Deque.*/
-    public Term removeFirst() {
+    public T removeFirst() {
         if (isEmpty()) {
             return null;
         }
         int firstIndex = firstIndex();
-        Term toReturn = items[firstIndex];
+        T toReturn = items[firstIndex];
         items[firstIndex] = null;
         nextFirst = firstIndex;
         size -= 1;
+
+        if (items.length > 32 && size < items.length / 4) {
+            resize(items.length / 2);
+        }
         return toReturn;
     }
 
     @Override
     /** Removes and returns the last term of the Deque.*/
-    public Term removeLast() {
+    public T removeLast() {
         if (isEmpty()) {
             return null;
         }
         int lastIndex = lastIndex();
-        Term toReturn = items[lastIndex];
+        T toReturn = items[lastIndex];
         items[lastIndex] = null;
         nextLast = lastIndex;
         size -= 1;
@@ -137,7 +141,7 @@ public class ArrayDeque<Term> implements Iterable<Term>, Deque<Term> {
 
     @Override
     /** Gets the item at the given index.*/
-    public Term get(int index) {
+    public T get(int index) {
         if (index >= size || index < 0) {
             return null;
         }
@@ -157,7 +161,7 @@ public class ArrayDeque<Term> implements Iterable<Term>, Deque<Term> {
 
         @Override
         public Type next() {
-            Type toReturn = (Type)get(position);
+            Type toReturn = (Type) get(position);
             position += 1;
             return toReturn;
         }
@@ -165,8 +169,8 @@ public class ArrayDeque<Term> implements Iterable<Term>, Deque<Term> {
 
     @Override
     /** Returns an iterator, overriding the method of Iterable interface. */
-    public Iterator<Term> iterator() {
-        return new ADequeIterator<Term>();
+    public Iterator<T> iterator() {
+        return new ADequeIterator<T>();
     }
 
     @Override
@@ -177,7 +181,7 @@ public class ArrayDeque<Term> implements Iterable<Term>, Deque<Term> {
             return false;
         }
         if (o.getClass() == this.getClass()) {
-            ArrayDeque<Term> other = (ArrayDeque<Term>) o;
+            ArrayDeque<T> other = (ArrayDeque<T>) o;
             if (size != other.size()) {
                 return false;
             }
@@ -187,8 +191,8 @@ public class ArrayDeque<Term> implements Iterable<Term>, Deque<Term> {
                 }
             }
             return true;
-        } else if (o.getClass() == ArrayDeque.class) {
-            LinkedListDeque<Term> other = (LinkedListDeque<Term>) o;
+        } else if (o.getClass() == LinkedListDeque.class) {
+            LinkedListDeque<T> other = (LinkedListDeque<T>) o;
             if (size != other.size()) {
                 return false;
             }

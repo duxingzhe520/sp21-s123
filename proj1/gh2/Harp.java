@@ -18,7 +18,7 @@ public class Harp {
     /* Create a guitar string of the given frequency.  */
     public Harp(double frequency) {
         buffer = new ArrayDeque<>();
-        int capacity = (int) Math.round((double)SR / frequency / 2);
+        int capacity = (int) Math.round((double) SR / frequency / 2);
         for (int i = 0; i < capacity; ++i) {
             buffer.addLast(0.0);
         }
