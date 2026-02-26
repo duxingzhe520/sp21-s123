@@ -1,11 +1,13 @@
 package deque;
 
+import java.util.Iterator;
+
 /** Double ended list based on array.
  *
  * @author duxingzhe520
  */
 
-public class ArrayDeque<Term> {
+public class ArrayDeque<Term> implements Iterable<Term>, Deque<Term> {
     private Term[] items;
     private int size;
     private int nextFirst;
@@ -59,6 +61,7 @@ public class ArrayDeque<Term> {
         items = newItems;
     }
 
+    @Override
     /** Adds an Item t to the first place of the Deque.*/
     public void addFirst(Term t) {
         if (size == items.length) {
@@ -69,7 +72,8 @@ public class ArrayDeque<Term> {
         nextFirst = validIndex(nextFirst - 1);
     }
 
-    /** Adds an Item t to the last place of the Deque.*/
+    @Override
+    /** Adds an Item t to the last place of the Deque. */
     public void addLast(Term t) {
         if (size == items.length) {
             resize((int) (size * 1.125));
@@ -79,16 +83,13 @@ public class ArrayDeque<Term> {
         nextLast = validIndex(nextLast + 1);
     }
 
-    /** Returns True if the Deque is empty.*/
-    public boolean isEmpty() {
-        return this.size == 0;
-    }
-
+    @Override
     /** Returns the size of the Deque. If it is empty, then it will return 0.*/
     public int size() {
         return this.size;
     }
 
+    @Override
     /** Prints the items in the deque from first to last, separated by a space.
      *  Once all the items have been printed, print out a new line. */
     public void printDeque() {
@@ -106,6 +107,7 @@ public class ArrayDeque<Term> {
         }
     }
 
+    @Override
     /** Removes and returns the front term of the Deque.*/
     public Term removeFirst() {
         if (isEmpty()) {
@@ -119,6 +121,7 @@ public class ArrayDeque<Term> {
         return toReturn;
     }
 
+    @Override
     /** Removes and returns the last term of the Deque.*/
     public Term removeLast() {
         if (isEmpty()) {
@@ -132,12 +135,71 @@ public class ArrayDeque<Term> {
         return toReturn;
     }
 
+    @Override
     /** Gets the item at the given index.*/
     public Term get(int index) {
-        if (index >= size) {
+        if (index >= size || index < 0) {
             return null;
         }
         int realIndex = validIndex(firstIndex() + index);
         return items[realIndex];
+    }
+
+    /** The class of Iterator made by ourselves, in order to return an
+     *  iterator of ArrayDeque. */
+    private class ADequeIterator<Type> implements Iterator<Type> {
+        int position;
+
+        @Override
+        public boolean hasNext() {
+            return this.position < size;
+        }
+
+        @Override
+        public Type next() {
+            Type toReturn = (Type)get(position);
+            position += 1;
+            return toReturn;
+        }
+    }
+
+    @Override
+    /** Returns an iterator, overriding the method of Iterable interface. */
+    public Iterator<Term> iterator() {
+        return new ADequeIterator<Term>();
+    }
+
+    @Override
+    /** Returns true iff o is instance of Deque, and has the same items
+     *  as this does, including type, value, and order. */
+    public boolean equals(Object o) {
+        if (o == null) {
+            return false;
+        }
+        if (o.getClass() == this.getClass()) {
+            ArrayDeque<Term> other = (ArrayDeque<Term>) o;
+            if (size != other.size()) {
+                return false;
+            }
+            for (int i = 0; i < size; ++i) {
+                if (!get(i).equals(other.get(i))) {
+                    return false;
+                }
+            }
+            return true;
+        } else if (o.getClass() == ArrayDeque.class) {
+            LinkedListDeque<Term> other = (LinkedListDeque<Term>) o;
+            if (size != other.size()) {
+                return false;
+            }
+            for (int i = 0; i < size; ++i) {
+                if (!get(i).equals(other.get(i))) {
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
     }
 }

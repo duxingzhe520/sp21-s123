@@ -1,5 +1,7 @@
 package deque;
 
+import java.util.Iterator;
+
 /** Double ended list based on link list.
  *
  * @param <Term>
@@ -8,7 +10,7 @@ package deque;
  *
  */
 
-public class LinkedListDeque<Term> {
+public class LinkedListDeque<Term> implements Iterable<Term>, Deque<Term> {
     private class ItemNode<Item> {
         Item first;
         ItemNode<Item> next;
@@ -60,6 +62,7 @@ public class LinkedListDeque<Term> {
         return this.sentinel.next;
     }
 
+    @Override
     /** Adds an Item t to the first place of the Deque.*/
     public void addFirst(Term t) {
         this.size += 1;
@@ -73,7 +76,8 @@ public class LinkedListDeque<Term> {
         this.sentinel.next = newFirst;
     }
 
-    /** Adds an Item t to the last place of the Deque.*/
+    @Override
+    /** Adds an Item t to the last place of the Deque. */
     public void addLast(Term t) {
         this.size += 1;
         ItemNode<Term> newLast = new ItemNode<>(t);
@@ -86,16 +90,13 @@ public class LinkedListDeque<Term> {
         this.sentinel.last = newLast;
     }
 
-    /** Returns True if the Deque is empty.*/
-    public boolean isEmpty() {
-        return (this.size == 0);
-    }
-
+    @Override
     /** Returns the size of the Deque. If it is empty, then it will return 0.*/
     public int size() {
         return this.size;
     }
 
+    @Override
     /** Prints the items in the deque from first to last, separated by a space.
      *  Once all the items have been printed, print out a new line. */
     public void printDeque() {
@@ -108,6 +109,7 @@ public class LinkedListDeque<Term> {
         System.out.print('\n');
     }
 
+    @Override
     /** Removes and returns the front term of the Deque.*/
     public Term removeFirst() {
         if (isEmpty()) {
@@ -122,6 +124,7 @@ public class LinkedListDeque<Term> {
         return oldFirst.first;
     }
 
+    @Override
     /** Removes and returns the last term of the Deque.*/
     public Term removeLast() {
         if (isEmpty()) {
@@ -136,8 +139,12 @@ public class LinkedListDeque<Term> {
         return oldLast.first;
     }
 
+    @Override
     /** Gets the item at the given index.*/
     public Term get(int index) {
+        if (index < 0 || index >= size) {
+            return null;
+        }
         ItemNode<Term> tmp = getFirstNode();
         int cnt_tmp = 0;
 
@@ -149,5 +156,82 @@ public class LinkedListDeque<Term> {
             cnt_tmp += 1;
         }
         return tmp.first;
+    }
+
+    /** Gets the item at the given index, but uses recursion.*/
+    public Term getRecursive(int index) {
+        if (isEmpty() || size <= index || index < 0) {
+            return null;
+        }
+        return getTermFromNode(sentinel.next, index);
+    }
+
+    /** Gets the index's item counted from node, as a helper of getRecursive(). */
+    private Term getTermFromNode(ItemNode<Term> node, int index) {
+        if (index < 0) {
+            return null;
+        }
+        if (index == 0) {
+            return node.first;
+        }
+        return getTermFromNode(node.next, index - 1);
+    }
+
+    /** The class of Iterator made by ourselves, in order to return an
+     *  iterator of LinkedListDeque. */
+    private class LLDequeIterator<Type> implements Iterator<Type>{
+        int position;
+
+        @Override
+        public boolean hasNext() {
+            return this.position < size;
+        }
+
+        @Override
+        public Type next() {
+            Type toReturn = (Type)get(position);
+            position += 1;
+            return toReturn;
+        }
+    }
+
+    @Override
+    /** Returns an iterator, overriding the method of Iterable interface. */
+    public Iterator<Term> iterator() {
+        return new LLDequeIterator<Term>();
+    }
+
+    @Override
+    /** Returns true iff o is instance of Deque, and has the same items
+     *  as this does, including type, value, and order. */
+    public boolean equals(Object o) {
+        if (o == null) {
+            return false;
+        }
+        if (o.getClass() == this.getClass()) {
+            LinkedListDeque<Term> other = (LinkedListDeque<Term>) o;
+            if (size != other.size()) {
+                return false;
+            }
+            for (int i = 0; i < size; ++i) {
+                if (!get(i).equals(other.get(i))) {
+                    return false;
+                }
+            }
+            return true;
+        } else if (o.getClass() == ArrayDeque.class) {
+            ArrayDeque<Term> other = (ArrayDeque<Term>) o;
+            if (size != other.size()) {
+                return false;
+            }
+            for (int i = 0; i < size; ++i) {
+                if (!get(i).equals(other.get(i))) {
+                    return false;
+                }
+            }
+            return true;
+        } else {
+            return false;
+        }
     }
 }

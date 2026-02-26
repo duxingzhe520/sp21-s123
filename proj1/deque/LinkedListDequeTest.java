@@ -1,6 +1,9 @@
 package deque;
 
 import org.junit.Test;
+
+import java.util.Iterator;
+
 import static org.junit.Assert.*;
 
 
@@ -117,7 +120,7 @@ public class LinkedListDequeTest {
     }
 
     @Test
-    /**Check if the printDeque()'s outcome is valid.*/
+    /*Check if the printDeque()'s outcome is valid.*/
     public void printTest() {
         LinkedListDeque<Integer> test = new LinkedListDeque<>(100);
         test.printDeque();
@@ -127,5 +130,63 @@ public class LinkedListDequeTest {
             test.printDeque();
         }
         assertEquals(11, test.size());
+    }
+
+    @Test
+    /* Check if the method iterator() works well.*/
+    public void iteratorTest() {
+        LinkedListDeque<Integer> test = new LinkedListDeque<>();
+        assertTrue(test.isEmpty());
+
+        for (int i = 0; i < 10; ++i) {
+            test.addLast(i);
+        }
+
+        Iterator<Integer> testIterator = test.iterator();
+        while (testIterator.hasNext()) {
+            System.out.print(testIterator.next() + " ");
+        }
+        System.out.print("\n");
+
+        for(int i : test) {
+            System.out.print(i + " ");
+        }
+        System.out.print("\n");
+
+        test.printDeque();
+
+        for (int i = 0; i < 10; ++i) {
+            test.removeFirst();
+        }
+        assertTrue(test.isEmpty());
+
+        Iterator<Integer> testIterator2 = test.iterator();
+        while (testIterator2.hasNext()) {
+            System.out.print(testIterator2.next() + " ");
+        }
+        System.out.print("\n");
+
+        for(int i : test) {
+            System.out.print(i + " ");
+        }
+        System.out.print("\n");
+
+        test.printDeque();
+    }
+
+    @Test
+    public void getRecursiveTest() {
+        LinkedListDeque<Integer> test = new LinkedListDeque<>();
+        assertEquals(null, test.getRecursive(0));
+        assertEquals(null, test.getRecursive(2));
+        assertEquals(null, test.getRecursive(-1));
+
+        for (int i = 0; i < 10; ++i) {
+            test.addLast(i);
+        }
+
+        assertEquals(5, (int)test.getRecursive(5));
+        assertEquals(null, test.getRecursive(10));
+        assertEquals(null, test.getRecursive(-1));
     }
 }
