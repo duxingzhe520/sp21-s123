@@ -215,7 +215,9 @@ public class ArrayDequeTest {
         }
 
         assertTrue(lld1.equals(ad1));
+        assertTrue(ad1.equals(lld1));
         assertTrue(lld2.equals(ad2));
+        assertTrue(ad2.equals(lld2));
         assertFalse(lld1.equals(lld2));
         assertFalse(lld1.equals(ad2));
 
