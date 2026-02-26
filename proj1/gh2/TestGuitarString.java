@@ -23,6 +23,26 @@ public class TestGuitarString  {
     }
 
     @Test
+    public void testPluckTheAStringHarp() {
+        Harp aString = new Harp(GuitarHeroLite.CONCERT_A);
+        aString.pluck();
+        for (int i = 0; i < 50000; i += 1) {
+            StdAudio.play(aString.sample());
+            aString.tic();
+        }
+    }
+
+    @Test
+    public void testPluckTheAStringDrum() {
+        Drum aString = new Drum(35.0);
+        aString.pluck();
+        for (int i = 0; i < 50000; i += 1) {
+            StdAudio.play(aString.sample());
+            aString.tic();
+        }
+    }
+
+    @Test
     public void testSample() {
         GuitarString s = new GuitarString(100);
         assertEquals(0.0, s.sample(), 0.0);

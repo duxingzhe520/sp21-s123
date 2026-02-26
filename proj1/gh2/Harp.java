@@ -3,20 +3,22 @@ package gh2;
 import deque.ArrayDeque;
 import deque.Deque;
 
-public class GuitarString {
-    /** Constants. Do not change. In case you're curious, the keyword final
-     * means the values cannot be changed at runtime. We'll discuss this and
-     * other topics in lecture on Friday. */
+/**
+ *
+ * @author duxingzhe520
+ * */
+
+public class Harp {
     private static final int SR = 44100;      // Sampling Rate
-    private static final double DECAY = .996; // energy decay factor
+    private static final double DECAY = .998; // energy decay factor
 
     /* Buffer for storing sound data. */
     private Deque<Double> buffer;
 
     /* Create a guitar string of the given frequency.  */
-    public GuitarString(double frequency) {
+    public Harp(double frequency) {
         buffer = new ArrayDeque<>();
-        int capacity = (int) Math.round((double)SR / frequency);
+        int capacity = (int) Math.round((double)SR / frequency / 2);
         for (int i = 0; i < capacity; ++i) {
             buffer.addLast(0.0);
         }
@@ -38,7 +40,7 @@ public class GuitarString {
     public void tic() {
         double firstElement = buffer.removeFirst();
         double newElement = DECAY * (firstElement + buffer.get(0)) / 2;
-        buffer.addLast(newElement);
+        buffer.addLast(-newElement);
     }
 
     /* Return the double at the front of the buffer. */
