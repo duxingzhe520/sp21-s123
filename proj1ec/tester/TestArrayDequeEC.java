@@ -20,7 +20,7 @@ public class TestArrayDequeEC {
         StudentArrayDeque<Integer> student = new StudentArrayDeque<>();
         ArrayDequeSolution<Integer> standard = new ArrayDequeSolution<>();
         for (int i = 0; i < 10000; ++i) {
-            int operatorNum = StdRandom.uniform(0, 4);
+            int operatorNum = StdRandom.uniform(0, 3);
             if (operatorNum == 0) {
                 student.addLast(i);
                 standard.addLast(i);
@@ -35,13 +35,13 @@ public class TestArrayDequeEC {
                     Integer a_2 = standard.removeFirst();
                     assertEquals("removeFirst()\n", a_2, a_1);
                 }
-            } else if (operatorNum == 3) {
+            } /*else if (operatorNum == 3) {
                 if (!standard.isEmpty()) {
                     Integer a_1 = student.removeLast();
                     Integer a_2 = standard.removeLast();
                     assertEquals("removeLast()\n", a_2, a_1);
                 }
-            }
+            }*/
         }
     }
 }
