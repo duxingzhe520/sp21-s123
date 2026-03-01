@@ -3,6 +3,8 @@ package bstmap;
 import static org.junit.Assert.*;
 import org.junit.Test;
 
+import java.util.Arrays;
+
 /** Tests by Brendan Hu, Spring 2015, revised for 2016 by Josh Hug */
 public class TestBSTMap {
 
@@ -87,4 +89,44 @@ public class TestBSTMap {
         assertTrue(b.containsKey("hi"));
     }
 
+    @Test
+    public void iteratorTest() {
+        BSTMap<String, Integer> test = new BSTMap<>();
+        for (int i = 0; i < 10; ++i) {
+          test.put("hello" + i, i);
+          test.put("allin" + i, i);
+        }
+        assertEquals(20, test.size());
+
+        for (String key : test) {
+          System.out.println(key);
+        }
+        test.printInOrder();
+    }
+
+    /*@Test
+    public void removeTest() {
+        BSTMap<String, Integer> test = new BSTMap<>();
+        String[] sList = new String[10];
+        for (int i = 0; i < 10; ++i) {
+         String s = StringUtils.randomString(5);
+         sList[i] = s;
+         test.put(sList[i], i);
+        }
+        test.printInOrder();
+
+        System.out.println();
+
+        System.out.println(test.remove(sList[2]));
+        test.printInOrder();
+        System.out.println();
+
+        System.out.println(test.remove(sList[6]));
+        test.printInOrder();
+        System.out.println();
+
+        System.out.println(test.remove(sList[0]));
+        test.printInOrder();
+        System.out.println();
+    }*/
 }
