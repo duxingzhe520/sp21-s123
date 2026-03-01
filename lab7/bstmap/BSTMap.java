@@ -239,7 +239,7 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V>, Iterabl
      * @param first the root accept new key and value.
      * @param provide the root provide its own key and value.
      * */
-    private void copyNodeKeyAndValue(@NonNull BSTMap<K, V> first, @NonNull BSTMap<K, V> provide) {
+    private void copyNodeKeyAndValue(BSTMap<K, V> first, BSTMap<K, V> provide) {
         first.root.key = provide.root.key;
         first.root.value = provide.root.value;
     }
@@ -249,14 +249,14 @@ public class BSTMap<K extends Comparable<K>, V> implements Map61B<K, V>, Iterabl
      * @param first the root accept new key and value.
      * @param provide the root provide its own key and value.
      * */
-    private void copyNode(@NonNull BSTMap<K, V> first, @NonNull BSTMap<K, V> provide) {
+    private void copyNode(BSTMap<K, V> first, BSTMap<K, V> provide) {
         first.root.key = provide.root.key;
         first.root.value = provide.root.value;
         first.leftTree = provide.leftTree;
         first.rightTree = provide.rightTree;
     }
 
-    private BSTMap<K, V> findPredecessor(@NonNull BSTMap<K, V> start) {
+    private BSTMap<K, V> findPredecessor(BSTMap<K, V> start) {
         if (start.rightTree != null) {
             return findPredecessor(start.rightTree);
         }
